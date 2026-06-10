@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+/*
+  HYENAZ MAFIA MEDIA — design tokens
+  Palette sampled from the Style Bible (docs/KICKOFF.md §2).
+  Crimson + Pearl are exact from the logo; gold/smoke complement.
+*/
+
+@theme {
+  /* Crimson — artist / edge */
+  --color-crimson: #cf0b34;
+  --color-crimson-shadow: #5f010f;
+
+  /* Pearl — wordmark / warm light */
+  --color-pearl: #f6e5cc;
+  --color-pearl-highlight: #fefef1;
+
+  /* Champagne gold — business / premium */
+  --color-gold: #c8a862;
+  --color-gold-deep: #9c7b3a;
+
+  /* Smoke — neutral structure */
+  --color-smoke: #3c4046;
+  --color-smoke-mid: #74787e;
+
+  /* Ink — the canvas everything sits on */
+  --color-ink: #0b0b0d;
+
+  /* Semantic aliases */
+  --color-background: var(--color-ink);
+  --color-foreground: var(--color-pearl);
+
+  /* Type system (KICKOFF §4) */
+  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Motion */
+  --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  border-color: color-mix(in srgb, var(--color-smoke) 50%, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-pearl);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Tabular numerals for pricing / deposits / booking (KICKOFF §4) */
+.tabular {
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Display lettering — tall, condensed, all-caps */
+.display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 0.92;
+}
+
+/* The crimson "slash" accent lifted from the lightning-slash lockup */
+.slash {
+  position: relative;
+}
+.slash::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.18em;
+  height: 0.12em;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-crimson),
+    var(--color-crimson-shadow)
+  );
+  transform: skewX(-18deg);
+}
+
+/* Champagne foil edge — the premium / business-side treatment */
+.foil {
+  background: linear-gradient(
+    100deg,
+    var(--color-gold-deep) 0%,
+    var(--color-gold) 35%,
+    var(--color-pearl-highlight) 50%,
+    var(--color-gold) 65%,
+    var(--color-gold-deep) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Subtle film-grain wash for hero fields */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: radial-gradient(
+    var(--color-pearl) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 3px 3px;
+}
+
+::selection {
+  background: var(--color-crimson);
+  color: var(--color-pearl-highlight);
+}
+
+/* Mandatory on Apex: heavy motion downgrades to static (APEX-STACK §Lanes) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
