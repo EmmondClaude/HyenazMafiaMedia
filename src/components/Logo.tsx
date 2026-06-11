@@ -35,6 +35,10 @@ export function Logo({
 }) {
   const reduce = useReducedMotion();
 
+  const glowLo = "drop-shadow(0 0 14px rgba(207,11,52,0.30))";
+  const glowHi = "drop-shadow(0 0 28px rgba(207,11,52,0.58))";
+  const glowMax = "drop-shadow(0 0 36px rgba(207,11,52,0.75))";
+
   const mark = (
     <motion.span
       className="inline-block"
@@ -42,11 +46,13 @@ export function Logo({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* gentle idle breath, decoupled from the hover/entrance transforms */}
+      {/* idle breath + crimson glow pulse; brightens and lifts on hover/focus */}
       <motion.span
         className="inline-block"
-        animate={reduce ? undefined : { scale: [1, 1.018, 1] }}
-        transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
+        style={{ filter: glowLo }}
+        animate={reduce ? undefined : { scale: [1, 1.04, 1], filter: [glowLo, glowHi, glowLo] }}
+        whileHover={{ scale: 1.07, filter: glowMax }}
+        transition={{ duration: 4.5, ease: "easeInOut", repeat: Infinity }}
       >
         <Image
           src={LOGO.src}
@@ -54,7 +60,7 @@ export function Logo({
           width={LOGO.w}
           height={LOGO.h}
           priority={priority}
-          className={`${HEIGHT[variant]} w-auto drop-shadow-[0_0_18px_rgba(207,11,52,0.35)] transition-[filter,transform] duration-300 ease-out group-hover:scale-105 group-hover:drop-shadow-[0_0_30px_rgba(207,11,52,0.6)] group-focus-visible:scale-105`}
+          className={`${HEIGHT[variant]} w-auto transition-transform duration-300 ease-out group-focus-visible:scale-105`}
         />
       </motion.span>
     </motion.span>
