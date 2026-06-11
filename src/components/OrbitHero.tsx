@@ -1,137 +1,180 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { heroAssets } from "@/lib/heroAssets";
 
 /**
  * The reinvented hero (KICKOFF §6 Home / Studio centerpiece).
  *
- * A 3D camera and a 3D microphone counter-rotate on two concentric rings around
- * the 3D HYENAZ logo locked in the center — the two production-house crafts
- * (image + sound) orbiting the brand. Subjects are Higgsfield renders on an
- * ink-black field so they melt into the canvas; concentric rings are crisp SVG.
- * Each render carries a baked background, so a radial mask feathers its edges to
- * transparent — the square/navy boundary dissolves into the ink field while the
- * lit object stays crisp and the rings/glow read through behind it.
+ * A 3D camera and a 3D microphone genuinely orbit the 3D HYENAZ logo locked in
+ * the center — the two production-house crafts (image + sound) circling the
+ * brand. Each subject passes BEHIND the mark across the top arc and IN FRONT
+ * across the bottom arc (animated z-index, flipped at the 3/9-o'clock sides
+ * where there's no overlap), so it reads as a real orbit with depth rather than
+ * a sprite hovering in front. The orbit guides are invisible — the motion alone
+ * carries it. The camera links to Visuals, the microphone to Production.
  *
- * Lane discipline (APEX-STACK): this is decorative component motion, not
- * scroll-linked — it lives in the Motion lane. prefers-reduced-motion drops the
- * orbit and renders a static composed lockup, which is mandatory on Apex.
+ * Lane discipline (APEX-STACK): decorative component motion, not scroll-linked —
+ * the Motion lane. prefers-reduced-motion parks the subjects into a static
+ * composed lockup, which is mandatory on Apex.
  */
+
+type Ring = {
+  radius: number; // distance from center, % of the square stage
+  duration: number; // seconds per revolution
+  size: number; // subject width in vw (capped for desktop)
+  startAngle: number; // degrees; 0 = top (12 o'clock)
+  reverse: boolean; // orbit direction
+  subject: { src: string; alt: string };
+  href: string;
+  label: string;
+};
+
+const RINGS: Ring[] = [
+  {
+    radius: 41,
+    duration: 30,
+    size: 24,
+    startAngle: 0,
+    reverse: false,
+    subject: heroAssets.camera,
+    href: "/visuals",
+    label: "Videography & photography — go to Visuals",
+  },
+  {
+    radius: 27,
+    duration: 22,
+    size: 20,
+    startAngle: 180,
+    reverse: true,
+    subject: heroAssets.mic,
+    href: "/production",
+    label: "Audio & music production — go to Production",
+  },
+];
+
 export function OrbitHero() {
   const reduce = useReducedMotion();
 
-  // Two concentric orbits, counter-rotating. Radii are % of the stage.
-  const outer = { radius: 42, duration: 28, subject: heroAssets.camera, size: 26 };
-  const inner = { radius: 27, duration: 20, subject: heroAssets.mic, size: 22 };
-
   return (
     <div className="grain relative aspect-square w-full overflow-hidden rounded-2xl border border-smoke/40 bg-[radial-gradient(circle_at_50%_50%,rgba(95,1,15,0.4),transparent_70%)]">
-      {/* concentric guide rings */}
-      <svg
-        viewBox="0 0 100 100"
-        className="absolute inset-0 h-full w-full"
-        aria-hidden
-      >
-        <circle cx="50" cy="50" r={outer.radius} fill="none" stroke="var(--color-smoke)" strokeWidth="0.2" opacity="0.5" />
-        <circle cx="50" cy="50" r={inner.radius} fill="none" stroke="var(--color-gold)" strokeWidth="0.2" opacity="0.35" />
-        <circle cx="50" cy="50" r="13" fill="none" stroke="var(--color-crimson)" strokeWidth="0.25" opacity="0.4" />
-      </svg>
-
-      {/* center — 3D logo emblem (feather the baked navy field into the canvas) */}
-      <div
-        className="absolute left-1/2 top-1/2 z-10 w-[34%] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_40px_rgba(207,11,52,0.45)]"
-        style={{
-          WebkitMaskImage:
-            "radial-gradient(circle, #000 66%, transparent 86%)",
-          maskImage: "radial-gradient(circle, #000 66%, transparent 86%)",
-        }}
-      >
+      {/* center — 3D logo emblem (background removed; only the mark shows) */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-[44%] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_40px_rgba(207,11,52,0.45)]">
         <Image
           src={heroAssets.logo.src}
           alt={heroAssets.logo.alt}
-          width={2048}
-          height={2048}
+          width={1817}
+          height={1169}
           priority
           className="h-auto w-full"
         />
       </div>
 
-      {/* orbiting subjects */}
-      {[outer, inner].map((ring, i) => (
-        <Orbit key={i} {...ring} reduce={reduce} reverse={i === 1} />
+      {RINGS.map((ring) => (
+        <Orbit key={ring.href} ring={ring} reduce={reduce} />
       ))}
     </div>
   );
 }
 
-function Orbit({
-  radius,
-  duration,
-  subject,
-  size,
-  reduce,
-  reverse,
-}: {
-  radius: number;
-  duration: number;
-  subject: { src: string; alt: string };
-  size: number;
-  reduce: boolean | null;
-  reverse: boolean;
-}) {
-  const spin = reverse ? -360 : 360;
+function Orbit({ ring, reduce }: { ring: Ring; reduce: boolean | null }) {
+  const { radius, duration, size, startAngle, reverse, subject, href, label } = ring;
 
-  // Static fallback: park the subject at a fixed point on its ring.
-  const parkedY = reverse ? radius : -radius;
+  // Place the subject at the top of a full-stage layer, then rotate the layer
+  // about the stage center — radius is a clean % of the stage, so the path is a
+  // true circle (no wobble).
+  const positioned = (content: React.ReactNode) => (
+    <div
+      className="absolute left-1/2"
+      style={{ top: `${50 - radius}%`, transform: "translate(-50%, -50%)" }}
+    >
+      {content}
+    </div>
+  );
 
   if (reduce) {
+    // Static composed lockup — park the subject at its start angle, upright.
     return (
       <div
-        className="absolute left-1/2 top-1/2 z-20"
-        style={{ transform: `translate(-50%, -50%) translateY(${parkedY}%)` }}
+        className="pointer-events-none absolute inset-0 z-20"
+        style={{ transform: `rotate(${startAngle}deg)` }}
       >
-        <Subject {...subject} size={size} />
+        {positioned(
+          <div style={{ transform: `rotate(${-startAngle}deg)` }}>
+            <SubjectLink subject={subject} size={size} href={href} label={label} />
+          </div>,
+        )}
       </div>
     );
   }
 
+  const spin = reverse ? -360 : 360;
+
+  // Depth: behind the mark (z < logo's 10) across the top arc, in front
+  // (z > 10) across the bottom arc. The discrete flip lands at the sides
+  // (t = 0.25 / 0.75) where the subject never overlaps the logo, so it's unseen.
+  const norm = (((startAngle % 360) + 360) % 360);
+  const startsTop = norm < 90 || norm > 270;
+  const zVals = startsTop ? [5, 5, 15, 15, 5, 5] : [15, 15, 5, 5, 15, 15];
+  const zTimes = [0, 0.249, 0.251, 0.749, 0.751, 1];
+
   return (
     <motion.div
-      className="absolute inset-0 z-20"
-      animate={{ rotate: spin }}
-      transition={{ duration, ease: "linear", repeat: Infinity }}
+      className="pointer-events-none absolute inset-0"
+      animate={{ rotate: [startAngle, startAngle + spin], zIndex: zVals }}
+      transition={{
+        rotate: { duration, ease: "linear", repeat: Infinity },
+        zIndex: { duration, ease: "linear", repeat: Infinity, times: zTimes },
+      }}
     >
-      {/* place subject at top of the ring, then counter-rotate it upright */}
-      <div
-        className="absolute left-1/2 top-1/2"
-        style={{ transform: `translate(-50%, -50%) translateY(-${radius}%)` }}
-      >
+      {positioned(
+        // counter-rotate so the subject stays upright as the layer spins
         <motion.div
-          animate={{ rotate: -spin }}
+          animate={{ rotate: [-startAngle, -(startAngle + spin)] }}
           transition={{ duration, ease: "linear", repeat: Infinity }}
         >
-          <Subject {...subject} size={size} />
-        </motion.div>
-      </div>
+          <SubjectLink subject={subject} size={size} href={href} label={label} />
+        </motion.div>,
+      )}
     </motion.div>
   );
 }
 
-function Subject({ src, alt, size }: { src: string; alt: string; size: number }) {
+function SubjectLink({
+  subject,
+  size,
+  href,
+  label,
+}: {
+  subject: { src: string; alt: string };
+  size: number;
+  href: string;
+  label: string;
+}) {
   return (
-    <div
-      className="relative drop-shadow-[0_0_25px_rgba(0,0,0,0.6)]"
-      style={{
-        width: `${size}vw`,
-        maxWidth: size * 5.5,
-        aspectRatio: "1 / 1",
-        WebkitMaskImage: "radial-gradient(circle, #000 56%, transparent 74%)",
-        maskImage: "radial-gradient(circle, #000 56%, transparent 74%)",
-      }}
+    <Link
+      href={href}
+      aria-label={label}
+      className="group pointer-events-auto relative block outline-none"
+      style={{ width: `${size}vw`, maxWidth: size * 5.5, aspectRatio: "1 / 1" }}
     >
-      <Image src={src} alt={alt} fill sizes="30vw" className="object-contain" />
-    </div>
+      {/* baked near-black field feathered into the canvas; lifts on hover/focus */}
+      <span
+        className="absolute inset-0 drop-shadow-[0_0_25px_rgba(0,0,0,0.6)] transition-transform duration-300 ease-out group-hover:scale-110 group-focus-visible:scale-110"
+        style={{
+          WebkitMaskImage: "radial-gradient(circle, #000 56%, transparent 74%)",
+          maskImage: "radial-gradient(circle, #000 56%, transparent 74%)",
+        }}
+      >
+        <Image src={subject.src} alt={subject.alt} fill sizes="30vw" className="object-contain" />
+      </span>
+      {/* keyboard focus affordance */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -inset-1 rounded-full ring-2 ring-crimson/0 transition group-focus-visible:ring-crimson/70"
+      />
+    </Link>
   );
 }
