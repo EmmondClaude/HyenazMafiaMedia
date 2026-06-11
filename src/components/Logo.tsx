@@ -35,9 +35,13 @@ export function Logo({
 }) {
   const reduce = useReducedMotion();
 
-  const glowLo = "drop-shadow(0 0 14px rgba(207,11,52,0.30))";
-  const glowHi = "drop-shadow(0 0 28px rgba(207,11,52,0.58))";
-  const glowMax = "drop-shadow(0 0 36px rgba(207,11,52,0.75))";
+  // Layered crimson glow — richer than a single drop-shadow.
+  const glowLo =
+    "drop-shadow(0 0 16px rgba(207,11,52,0.45)) drop-shadow(0 0 32px rgba(207,11,52,0.25))";
+  const glowHi =
+    "drop-shadow(0 0 26px rgba(207,11,52,0.72)) drop-shadow(0 0 54px rgba(207,11,52,0.45))";
+  const glowMax =
+    "drop-shadow(0 0 34px rgba(207,11,52,0.9)) drop-shadow(0 0 66px rgba(207,11,52,0.55))";
 
   const mark = (
     <motion.span
@@ -54,14 +58,24 @@ export function Logo({
         whileHover={{ scale: 1.07, filter: glowMax }}
         transition={{ duration: 4.5, ease: "easeInOut", repeat: Infinity }}
       >
-        <Image
-          src={LOGO.src}
-          alt="HYENAZ MAFIA MEDIA"
-          width={LOGO.w}
-          height={LOGO.h}
-          priority={priority}
-          className={`${HEIGHT[variant]} w-auto transition-transform duration-300 ease-out group-focus-visible:scale-105`}
-        />
+        <span className="relative inline-block">
+          <Image
+            src={LOGO.src}
+            alt="HYENAZ MAFIA MEDIA"
+            width={LOGO.w}
+            height={LOGO.h}
+            priority={priority}
+            className={`${HEIGHT[variant]} block w-auto transition-transform duration-300 ease-out group-focus-visible:scale-105`}
+          />
+          {/* pearl→crimson light cascading across the mark, masked to its shape */}
+          {!reduce && (
+            <span
+              aria-hidden
+              className="logo-sweep"
+              style={{ WebkitMaskImage: `url(${LOGO.src})`, maskImage: `url(${LOGO.src})` }}
+            />
+          )}
+        </span>
       </motion.span>
     </motion.span>
   );

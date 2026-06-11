@@ -31,23 +31,38 @@ export function LoadingScreen() {
               : {
                   y: [0, -10, 0],
                   filter: [
-                    "drop-shadow(0 0 24px rgba(207,11,52,0.35))",
-                    "drop-shadow(0 0 50px rgba(207,11,52,0.6))",
-                    "drop-shadow(0 0 24px rgba(207,11,52,0.35))",
+                    "drop-shadow(0 0 28px rgba(207,11,52,0.4)) drop-shadow(0 0 56px rgba(207,11,52,0.25))",
+                    "drop-shadow(0 0 48px rgba(207,11,52,0.75)) drop-shadow(0 0 96px rgba(207,11,52,0.5))",
+                    "drop-shadow(0 0 28px rgba(207,11,52,0.4)) drop-shadow(0 0 56px rgba(207,11,52,0.25))",
                   ],
                 }
           }
           transition={{ duration: 4.5, ease: "easeInOut", repeat: Infinity }}
-          style={{ filter: "drop-shadow(0 0 24px rgba(207,11,52,0.35))" }}
+          style={{
+            filter:
+              "drop-shadow(0 0 28px rgba(207,11,52,0.4)) drop-shadow(0 0 56px rgba(207,11,52,0.25))",
+          }}
         >
-          <Image
-            src="/brand/hero-logo.png"
-            alt="HYENAZ MAFIA MEDIA"
-            width={1817}
-            height={1169}
-            priority
-            className="h-auto w-[min(78vw,440px)]"
-          />
+          <span className="relative inline-block">
+            <Image
+              src="/brand/hero-logo.png"
+              alt="HYENAZ MAFIA MEDIA"
+              width={1817}
+              height={1169}
+              priority
+              className="block h-auto w-[min(78vw,440px)]"
+            />
+            {!reduce && (
+              <span
+                aria-hidden
+                className="logo-sweep"
+                style={{
+                  WebkitMaskImage: "url(/brand/hero-logo.png)",
+                  maskImage: "url(/brand/hero-logo.png)",
+                }}
+              />
+            )}
+          </span>
         </motion.div>
       </motion.div>
 
