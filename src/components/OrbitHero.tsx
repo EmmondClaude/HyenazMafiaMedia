@@ -21,6 +21,12 @@ import { heroAssets } from "@/lib/heroAssets";
  * composed lockup, which is mandatory on Apex.
  */
 
+// Layered crimson glow for the centered mark — matches the Logo / loading splash.
+const HERO_GLOW_LO =
+  "drop-shadow(0 0 24px rgba(207,11,52,0.45)) drop-shadow(0 0 48px rgba(207,11,52,0.25))";
+const HERO_GLOW_HI =
+  "drop-shadow(0 0 40px rgba(207,11,52,0.75)) drop-shadow(0 0 82px rgba(207,11,52,0.45))";
+
 type Ring = {
   radius: number; // distance from center, % of the square stage
   duration: number; // seconds per revolution
@@ -60,17 +66,35 @@ export function OrbitHero() {
 
   return (
     <div className="grain relative aspect-square w-full overflow-hidden rounded-2xl border border-smoke/40 bg-[radial-gradient(circle_at_50%_50%,rgba(95,1,15,0.4),transparent_70%)]">
-      {/* center — 3D logo emblem (background removed; only the mark shows) */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-[44%] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_40px_rgba(207,11,52,0.45)]">
-        <Image
-          src={heroAssets.logo.src}
-          alt={heroAssets.logo.alt}
-          width={1817}
-          height={1169}
-          priority
-          className="h-auto w-full"
-        />
-      </div>
+      {/* center — 3D logo emblem (background removed; only the mark shows),
+          with the same layered crimson glow pulse + cascading light sweep */}
+      <motion.div
+        className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-[44%] -translate-x-1/2 -translate-y-1/2"
+        style={{ filter: HERO_GLOW_LO }}
+        animate={reduce ? undefined : { filter: [HERO_GLOW_LO, HERO_GLOW_HI, HERO_GLOW_LO] }}
+        transition={{ duration: 4.5, ease: "easeInOut", repeat: Infinity }}
+      >
+        <span className="relative block">
+          <Image
+            src={heroAssets.logo.src}
+            alt={heroAssets.logo.alt}
+            width={1817}
+            height={1169}
+            priority
+            className="block h-auto w-full"
+          />
+          {!reduce && (
+            <span
+              aria-hidden
+              className="logo-sweep"
+              style={{
+                WebkitMaskImage: `url(${heroAssets.logo.src})`,
+                maskImage: `url(${heroAssets.logo.src})`,
+              }}
+            />
+          )}
+        </span>
+      </motion.div>
 
       {RINGS.map((ring) => (
         <Orbit key={ring.href} ring={ring} reduce={reduce} />
