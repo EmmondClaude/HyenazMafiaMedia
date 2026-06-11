@@ -11,6 +11,9 @@ import { heroAssets } from "@/lib/heroAssets";
  * the 3D HYENAZ logo locked in the center — the two production-house crafts
  * (image + sound) orbiting the brand. Subjects are Higgsfield renders on an
  * ink-black field so they melt into the canvas; concentric rings are crisp SVG.
+ * Each render carries a baked background, so a radial mask feathers its edges to
+ * transparent — the square/navy boundary dissolves into the ink field while the
+ * lit object stays crisp and the rings/glow read through behind it.
  *
  * Lane discipline (APEX-STACK): this is decorative component motion, not
  * scroll-linked — it lives in the Motion lane. prefers-reduced-motion drops the
@@ -36,8 +39,15 @@ export function OrbitHero() {
         <circle cx="50" cy="50" r="13" fill="none" stroke="var(--color-crimson)" strokeWidth="0.25" opacity="0.4" />
       </svg>
 
-      {/* center — 3D logo emblem */}
-      <div className="absolute left-1/2 top-1/2 z-10 w-[34%] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_40px_rgba(207,11,52,0.45)]">
+      {/* center — 3D logo emblem (feather the baked navy field into the canvas) */}
+      <div
+        className="absolute left-1/2 top-1/2 z-10 w-[34%] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_40px_rgba(207,11,52,0.45)]"
+        style={{
+          WebkitMaskImage:
+            "radial-gradient(circle, #000 66%, transparent 86%)",
+          maskImage: "radial-gradient(circle, #000 66%, transparent 86%)",
+        }}
+      >
         <Image
           src={heroAssets.logo.src}
           alt={heroAssets.logo.alt}
@@ -113,7 +123,13 @@ function Subject({ src, alt, size }: { src: string; alt: string; size: number })
   return (
     <div
       className="relative drop-shadow-[0_0_25px_rgba(0,0,0,0.6)]"
-      style={{ width: `${size}vw`, maxWidth: size * 5.5, aspectRatio: "1 / 1" }}
+      style={{
+        width: `${size}vw`,
+        maxWidth: size * 5.5,
+        aspectRatio: "1 / 1",
+        WebkitMaskImage: "radial-gradient(circle, #000 56%, transparent 74%)",
+        maskImage: "radial-gradient(circle, #000 56%, transparent 74%)",
+      }}
     >
       <Image src={src} alt={alt} fill sizes="30vw" className="object-contain" />
     </div>
