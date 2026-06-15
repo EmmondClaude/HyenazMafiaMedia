@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { OrbitHero } from "@/components/OrbitHero";
 import { Reveal } from "@/components/Reveal";
+import { ReleaseTeaser } from "@/components/ReleaseTeaser";
 import { Section, Eyebrow, SlashHeading, Button, Card } from "@/components/ui";
-import { brand, services, catalog } from "@/lib/brand";
+import { brand, services, releases } from "@/lib/brand";
 
 export default function Home() {
   return (
@@ -113,16 +114,9 @@ export default function Home() {
           <Eyebrow>THE CATALOG</Eyebrow>
           <SlashHeading className="mt-3">Seven years deep</SlashHeading>
         </Reveal>
-        <div className="mt-10 flex flex-wrap gap-3">
-          {catalog.slice(0, 8).map((r, i) => (
-            <Reveal key={r.title} delay={i * 0.04}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-smoke/50 px-4 py-2 text-sm text-pearl/80">
-                {r.title}
-                <span className="tabular text-smoke-mid">{r.year}</span>
-              </span>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal className="mt-10">
+          <ReleaseTeaser releases={releases} />
+        </Reveal>
         <div className="mt-8">
           <Button href="/epk" variant="ghost">
             FULL DISCOGRAPHY
