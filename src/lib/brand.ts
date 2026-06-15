@@ -150,6 +150,134 @@ export const catalog = [
   { title: "This Tyme Around", year: 2017, type: "Album" },
 ] as const;
 
+/**
+ * Discography — releases with cover art that link out to Spotify + Apple Music.
+ * Single source of truth for the /epk cover grid; render from this, never
+ * hardcode cards. Links verified from his Spotify (62zntN4UQCZqIiIxRt7fjb) and
+ * Apple (516708870) profiles, June 2026. Newest first.
+ *
+ * A few entries intentionally omit URLs / year — covers exist but the DSP links
+ * are still owed by the client (see DISCOGRAPHY-HANDOFF §7). Cards hide any
+ * button whose link is missing rather than render a dead link.
+ */
+export type ReleaseType = "Single" | "EP" | "Mixtape" | "Album";
+
+export interface Release {
+  slug: string;
+  title: string;
+  type: ReleaseType;
+  year?: number; // render with tabular numerals
+  cover: string; // "/releases/<slug>.jpg"
+  spotifyUrl?: string;
+  appleUrl?: string;
+}
+
+export const releases: Release[] = [
+  {
+    slug: "blessings",
+    title: "Blessings",
+    type: "Single",
+    year: 2026,
+    cover: "/releases/blessings.jpg",
+    appleUrl: "https://music.apple.com/us/album/blessings-single/1870484091",
+    spotifyUrl: "https://open.spotify.com/album/4tXZ0kjvPA8PMc7MfrvQEA",
+  },
+  {
+    slug: "public-enemy",
+    title: "Public Enemy",
+    type: "Single",
+    year: 2025,
+    cover: "/releases/public-enemy.jpg",
+    appleUrl: "https://music.apple.com/us/album/public-enemy-single/1790237808",
+    spotifyUrl: "https://open.spotify.com/album/0pT5ULDL7zpua6CqYzM5hM",
+  },
+  {
+    slug: "why-explain",
+    title: "Why Explain",
+    type: "EP",
+    year: 2024,
+    cover: "/releases/why-explain.jpg",
+    appleUrl: "https://music.apple.com/us/album/why-explain-ep/1782748794",
+    spotifyUrl: "https://open.spotify.com/album/613glB45QLyuStfEe21wIJ",
+  },
+  {
+    slug: "stone-cold",
+    title: "Stone Cold",
+    type: "Single",
+    year: 2024,
+    cover: "/releases/stone-cold.jpg",
+    appleUrl: "https://music.apple.com/us/album/stone-cold-single/1774345314",
+    spotifyUrl: "https://open.spotify.com/album/7mid54OU656sTlJaKYurex",
+  },
+  {
+    slug: "grind-it-out",
+    title: "Grind It Out",
+    type: "Single",
+    year: 2024,
+    cover: "/releases/grind-it-out.jpg",
+    appleUrl: "https://music.apple.com/us/album/grind-it-out-single/1748420912",
+    spotifyUrl: "https://open.spotify.com/album/7AouhSgtpz4xgDHZmTX1iz",
+  },
+  {
+    slug: "escapin-depression-2",
+    title: "Escapin' Depression 2",
+    type: "Album",
+    year: 2023,
+    cover: "/releases/escapin-depression-2.jpg",
+    appleUrl: "https://music.apple.com/us/album/escapin-depression-2/1681158705",
+    spotifyUrl: "https://open.spotify.com/album/0zTRzHayF4KtEislxDa8Ii",
+  },
+  {
+    slug: "introversion",
+    title: "Introversion",
+    type: "Album",
+    year: 2022,
+    cover: "/releases/introversion.jpg",
+    appleUrl: "https://music.apple.com/us/album/introversion/1608252606",
+    spotifyUrl: "https://open.spotify.com/album/7eynOprrHbAc6Vkp9y02Ig",
+  },
+  {
+    // TODO (client, handoff §7): exact Apple + Spotify album URLs.
+    slug: "something-2-prove-rap",
+    title: "Something 2 Prove Rap",
+    type: "EP",
+    year: 2022,
+    cover: "/releases/something-2-prove-rap.jpg",
+  },
+  {
+    slug: "master-mind",
+    title: "Master Mind",
+    type: "Album",
+    year: 2020,
+    cover: "/releases/master-mind.jpg",
+    appleUrl: "https://music.apple.com/us/album/master-mind/1546651524",
+    spotifyUrl: "https://open.spotify.com/album/5m5yx5ud3ygU1qfDVANBqN",
+  },
+  {
+    slug: "in-my-feelings",
+    title: "In My Feelings",
+    type: "Album",
+    year: 2019,
+    cover: "/releases/in-my-feelings.jpg",
+    appleUrl: "https://music.apple.com/us/album/in-my-feelings/1476999393",
+    spotifyUrl: "https://open.spotify.com/album/61QJ2KeqKtNWhqL5nEoxx6",
+  },
+  {
+    // TODO (client, handoff §7): platform + links (likely Bandcamp) + type/year.
+    slug: "set-up",
+    title: "Set Up",
+    type: "Single",
+    cover: "/releases/set-up.jpg",
+  },
+  {
+    // TODO (client, handoff §7): platform + links (likely Bandcamp) + type/year.
+    slug: "caramel-macchiato",
+    title: "Caramel Macchiato",
+    type: "Single",
+    cover: "/releases/caramel-macchiato.jpg",
+  },
+];
+
 /** Bio hooks — confirmed (§5). */
 export const bio = {
   hook: "Started writing at nine, recorded his first song at thirteen.",

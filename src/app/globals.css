@@ -120,6 +120,52 @@ body {
   background-size: 3px 3px;
 }
 
+/* Logo glow sweep — a pearl→crimson highlight that cascades across the mark.
+   The container is masked to the logo's alpha, so the streak only rides the
+   lettering/slash, never a rectangle. */
+.logo-sweep {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.logo-sweep::after {
+  content: "";
+  position: absolute;
+  top: -25%;
+  bottom: -25%;
+  left: 0;
+  width: 38%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(254, 254, 241, 0.9),
+    rgba(207, 11, 52, 0.8),
+    transparent
+  );
+  filter: blur(2px);
+  mix-blend-mode: screen;
+  transform: translateX(-180%) skewX(-12deg);
+  animation: logo-sweep 4.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes logo-sweep {
+  0% {
+    transform: translateX(-180%) skewX(-12deg);
+  }
+  55% {
+    transform: translateX(320%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(320%) skewX(-12deg);
+  }
+}
+
 ::selection {
   background: var(--color-crimson);
   color: var(--color-pearl-highlight);

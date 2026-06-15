@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/Reveal";
-import { Hero3D } from "@/components/Hero3D";
+import { OrbitHero } from "@/components/OrbitHero";
 import { BookingPanel } from "@/components/BookingPanel";
 import { Section, Eyebrow, SlashHeading, Card } from "@/components/ui";
 import { tiers } from "@/lib/brand";
@@ -29,7 +29,7 @@ export default function StudioPage() {
             </p>
           </Reveal>
           <Reveal delay={0.15}>
-            <Hero3D />
+            <OrbitHero />
           </Reveal>
         </div>
       </section>

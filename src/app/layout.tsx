@@ -3,6 +3,7 @@ import { Anton, Inter } from "next/font/google";
 import "./globals.css";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { IntroLoader } from "@/components/IntroLoader";
 import { brand } from "@/lib/brand";
 
 // Display / impact — tall, condensed, all-caps (KICKOFF §4)
@@ -40,6 +41,7 @@ export default function RootLayout({
       className={`${anton.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-ink text-pearl">
+        <IntroLoader />
         <SiteNav />
         <main className="flex-1">{children}</main>
         <SiteFooter />

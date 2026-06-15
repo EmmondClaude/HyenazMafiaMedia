@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/Reveal";
+import { ReleaseGrid } from "@/components/ReleaseGrid";
 import { Section, Eyebrow, SlashHeading, Button, Card } from "@/components/ui";
-import { brand, bio, catalog, services } from "@/lib/brand";
+import { brand, bio, catalog, releases, services } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "EPK",
@@ -29,6 +30,20 @@ export default function EpkPage() {
         </Reveal>
       </Section>
 
+      {/* DISCOGRAPHY — release covers linking out to Spotify + Apple Music */}
+      <Section className="border-t border-smoke/30">
+        <Reveal>
+          <Eyebrow>THE CATALOG</Eyebrow>
+          <SlashHeading className="mt-3">Discography</SlashHeading>
+          <p className="mt-4 max-w-2xl text-pearl/70">
+            Seven years deep — stream every release on Spotify and Apple Music.
+          </p>
+        </Reveal>
+        <div className="mt-12">
+          <ReleaseGrid releases={releases} />
+        </div>
+      </Section>
+
       {/* DUAL IDENTITY: artist <> business */}
       <Section className="border-t border-smoke/30 pt-0">
         <div className="grid gap-6 lg:grid-cols-2">
@@ -36,7 +51,7 @@ export default function EpkPage() {
           <Reveal>
             <Card className="h-full">
               <Eyebrow>THE ARTIST</Eyebrow>
-              <h2 className="display mt-3 text-2xl text-pearl">Discography</h2>
+              <h2 className="display mt-3 text-2xl text-pearl">Full Catalog</h2>
               <ul className="mt-5 divide-y divide-smoke/30">
                 {catalog.map((r) => (
                   <li key={r.title} className="flex items-center justify-between py-2.5">
