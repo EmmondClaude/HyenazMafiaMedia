@@ -33,6 +33,12 @@ export function ReleaseCard({ release }: { release: Release }) {
     embedSrc = `${base}${base.includes("?") ? "&" : "?"}theme=dark`;
   }
 
+  // Apple serves two embed layouts: a compact ~175px player for a specific track
+  // (?i=…) and a tall ~450px album-style player without one. Size the iframe to
+  // match so it never overflows its box.
+  const isTrackEmbed = !!playerUrl && /[?&]i=/.test(playerUrl);
+  const playerHeight = isTrackEmbed ? 175 : 450;
+
   return (
     <div className="group" style={{ "--accent": accent } as CSSProperties}>
       <TiltCard max={10} className="relative">
@@ -79,7 +85,7 @@ export function ReleaseCard({ release }: { release: Release }) {
               loading="lazy"
               allow="autoplay *; encrypted-media *; clipboard-write"
               className="block w-full rounded-lg"
-              height={175}
+              height={playerHeight}
               style={{ border: 0, background: "transparent" }}
             />
           </div>
