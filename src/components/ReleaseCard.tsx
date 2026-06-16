@@ -26,7 +26,9 @@ export function ReleaseCard({ release }: { release: Release }) {
 
   const accent = releaseAccents[slug] ?? "#C8A862";
 
-  const playerUrl = type === "Single" ? appleUrl : appleEmbedUrl;
+  // Singles prefer their featured-track link (compact song player) when present,
+  // falling back to the release URL; non-singles only embed a chosen track.
+  const playerUrl = type === "Single" ? appleEmbedUrl ?? appleUrl : appleEmbedUrl;
   let embedSrc: string | undefined;
   if (playerUrl?.startsWith(APPLE_HOST)) {
     const base = playerUrl.replace(APPLE_HOST, EMBED_HOST);

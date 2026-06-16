@@ -187,6 +187,7 @@ export const releases: Release[] = [
     year: 2026,
     cover: "/releases/blessings.jpg",
     appleUrl: "https://music.apple.com/us/album/blessings-single/1870484091",
+    appleEmbedUrl: "https://music.apple.com/us/album/blessings/1870484091?i=1870484092",
     spotifyUrl: "https://open.spotify.com/album/4tXZ0kjvPA8PMc7MfrvQEA",
   },
   {
@@ -196,6 +197,7 @@ export const releases: Release[] = [
     year: 2025,
     cover: "/releases/public-enemy.jpg",
     appleUrl: "https://music.apple.com/us/album/public-enemy-single/1790237808",
+    appleEmbedUrl: "https://music.apple.com/us/album/public-enemy/1790237808?i=1790238139",
     spotifyUrl: "https://open.spotify.com/album/0pT5ULDL7zpua6CqYzM5hM",
   },
   {
@@ -215,6 +217,7 @@ export const releases: Release[] = [
     year: 2024,
     cover: "/releases/stone-cold.jpg",
     appleUrl: "https://music.apple.com/us/album/stone-cold-single/1774345314",
+    appleEmbedUrl: "https://music.apple.com/us/album/stone-cold/1774345314?i=1774345315",
     spotifyUrl: "https://open.spotify.com/album/7mid54OU656sTlJaKYurex",
   },
   {
@@ -224,6 +227,7 @@ export const releases: Release[] = [
     year: 2024,
     cover: "/releases/grind-it-out.jpg",
     appleUrl: "https://music.apple.com/us/album/grind-it-out-single/1748420912",
+    appleEmbedUrl: "https://music.apple.com/us/album/grind-it-out/1748420912?i=1748420913",
     spotifyUrl: "https://open.spotify.com/album/7AouhSgtpz4xgDHZmTX1iz",
   },
   {
