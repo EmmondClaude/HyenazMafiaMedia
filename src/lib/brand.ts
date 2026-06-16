@@ -241,6 +241,7 @@ export const releases: Release[] = [
     year: 2022,
     cover: "/releases/introversion.jpg",
     appleUrl: "https://music.apple.com/us/album/introversion/1608252606",
+    appleEmbedUrl: "https://music.apple.com/us/album/revolving-doors-feat-emmond-smith/1608252606?i=1608252611",
     spotifyUrl: "https://open.spotify.com/album/7eynOprrHbAc6Vkp9y02Ig",
   },
   {
