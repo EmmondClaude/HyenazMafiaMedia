@@ -267,6 +267,7 @@ export const releases: Release[] = [
     year: 2019,
     cover: "/releases/in-my-feelings.jpg",
     appleUrl: "https://music.apple.com/us/album/in-my-feelings/1476999393",
+    appleEmbedUrl: "https://music.apple.com/us/album/focused/1476999393?i=1476999404",
     spotifyUrl: "https://open.spotify.com/album/61QJ2KeqKtNWhqL5nEoxx6",
   },
   {
