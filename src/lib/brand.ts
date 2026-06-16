@@ -259,6 +259,7 @@ export const releases: Release[] = [
     year: 2020,
     cover: "/releases/master-mind.jpg",
     appleUrl: "https://music.apple.com/us/album/master-mind/1546651524",
+    appleEmbedUrl: "https://music.apple.com/us/album/slow-burn-feat-keiloo/1546651524?i=1546651530",
     spotifyUrl: "https://open.spotify.com/album/5m5yx5ud3ygU1qfDVANBqN",
   },
   {
