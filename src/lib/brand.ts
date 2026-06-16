@@ -232,6 +232,7 @@ export const releases: Release[] = [
     year: 2023,
     cover: "/releases/escapin-depression-2.jpg",
     appleUrl: "https://music.apple.com/us/album/escapin-depression-2/1681158705",
+    appleEmbedUrl: "https://music.apple.com/us/album/life-gets-hard-feat-tha-landlord-leonitus/1681158705?i=1681158981",
     spotifyUrl: "https://open.spotify.com/album/0zTRzHayF4KtEislxDa8Ii",
   },
   {
