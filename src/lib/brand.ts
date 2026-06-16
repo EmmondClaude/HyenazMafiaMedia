@@ -170,6 +170,13 @@ export interface Release {
   cover: string; // "/releases/<slug>.jpg"
   spotifyUrl?: string;
   appleUrl?: string;
+  /**
+   * Featured-track Apple Music URL (the song page, i.e. an album URL with
+   * `?i=<trackId>`) for the inline player. Discography rule: a Single plays its
+   * own song from `appleUrl`; an album/EP features its single most-popular track
+   * here — never the whole body of work. Omit to keep Apple as a browse link.
+   */
+  appleEmbedUrl?: string;
 }
 
 export const releases: Release[] = [
