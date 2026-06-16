@@ -205,6 +205,7 @@ export const releases: Release[] = [
     year: 2024,
     cover: "/releases/why-explain.jpg",
     appleUrl: "https://music.apple.com/us/album/why-explain-ep/1782748794",
+    appleEmbedUrl: "https://music.apple.com/us/album/wont-settle-pt-2/1782748794?i=1782748798",
     spotifyUrl: "https://open.spotify.com/album/613glB45QLyuStfEe21wIJ",
   },
   {
