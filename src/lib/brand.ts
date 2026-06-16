@@ -287,3 +287,26 @@ export const bio = {
   features: ["Kae Jones", "Connie Pee", "D'arrick Dawayne", "Josh Dakid", "Chozen Ru", "Hitman Beatz"],
   press: ['Guest on the Las Vegas podcast "Views From The 7."'],
 } as const;
+
+/**
+ * Official artist destinations — verified from his Spotify (62zntN4UQCZqIiIxRt7fjb)
+ * and Apple (516708870) profiles, June 2026. The "Spitta_p" handle (underscore)
+ * resolves him; plain "Spitta P" pulls a different, feature-only artist.
+ */
+export const artistLinks = {
+  spotify: "https://open.spotify.com/artist/62zntN4UQCZqIiIxRt7fjb",
+  apple: "https://music.apple.com/us/artist/spitta-p/516708870",
+  instagram: "https://instagram.com/spitta_p",
+  bandcamp: "https://hmfden.bandcamp.com",
+} as const;
+
+/** Music videos (Apple Music). */
+export type MusicVideo = { title: string; year: number; url: string };
+
+export const videos: MusicVideo[] = [
+  { title: "Crash Sights", year: 2023, url: "https://music.apple.com/us/music-video/crash-sights/1683488816" },
+  { title: "Flawed Out Being", year: 2022, url: "https://music.apple.com/us/music-video/flawed-out-being/1660494800" },
+  { title: "What Pressure Made", year: 2022, url: "https://music.apple.com/us/music-video/what-pressure-made/1657012765" },
+  { title: "Phoenix", year: 2022, url: "https://music.apple.com/us/music-video/phoenix/1650147384" },
+  { title: "Something 2 Prove", year: 2022, url: "https://music.apple.com/us/music-video/something-2-prove/1650146754" },
+];
