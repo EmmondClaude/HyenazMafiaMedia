@@ -1,53 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import Image from "next/image";
-import type { Release } from "@/lib/brand";
+import { TiltCard } from "./TiltCard";
+import { releaseAccents, type Release } from "@/lib/brand";
 
 const APPLE_HOST = "https://music.apple.com";
 const EMBED_HOST = "https://embed.music.apple.com";
 
 /**
- * Release cover (1:1) → title → type · year → actions.
+ * Release cover (1:1) → title → type · year → actions, tinted to the cover's
+ * own accent (releaseAccents) so each player matches its artwork.
  *
  * Apple Music inline player (discography rule): a Single embeds its own song
- * (from `appleUrl`); an album/EP only gets a player once a most-popular featured
- * track is set (`appleEmbedUrl`) — never the whole album. The iframe is a
- * click-to-load facade (lazy), so 12 players never load until asked. Spotify
- * stays a link. Cover zoom is CSS, so prefers-reduced-motion holds it static.
+ * (from appleUrl); an album/EP only gets a player once a most-popular featured
+ * track is set (appleEmbedUrl) — never the whole album. The player is a
+ * click-to-load facade (lazy iframe) and renders OUTSIDE the 3D tilt (iframes
+ * misrender inside CSS 3D transforms). Only the cover tilts. The play badge is
+ * always visible (works on touch, not hover-only). prefers-reduced-motion is
+ * handled by TiltCard + the global clamp.
  */
 export function ReleaseCard({ release }: { release: Release }) {
-  const { title, type, year, cover, spotifyUrl, appleUrl, appleEmbedUrl } = release;
+  const { slug, title, type, year, cover, spotifyUrl, appleUrl, appleEmbedUrl } = release;
   const [playing, setPlaying] = useState(false);
 
+  const accent = releaseAccents[slug] ?? "#C8A862";
+
   const playerUrl = type === "Single" ? appleUrl : appleEmbedUrl;
-  const embedSrc = playerUrl?.startsWith(APPLE_HOST)
-    ? playerUrl.replace(APPLE_HOST, EMBED_HOST)
-    : undefined;
+  let embedSrc: string | undefined;
+  if (playerUrl?.startsWith(APPLE_HOST)) {
+    const base = playerUrl.replace(APPLE_HOST, EMBED_HOST);
+    embedSrc = `${base}${base.includes("?") ? "&" : "?"}theme=dark`;
+  }
 
   return (
-    <div className="group">
-      <div className="relative aspect-square overflow-hidden rounded-lg border border-smoke/40 bg-smoke/10">
-        <Image
-          src={cover}
-          alt={`${title} — Spitta P`}
-          fill
-          sizes="(min-width: 1024px) 24vw, (min-width: 640px) 33vw, 50vw"
-          className="object-cover transition-transform duration-500 ease-[var(--ease-brand)] group-hover:scale-105"
-        />
-        {embedSrc && !playing && (
-          <button
-            type="button"
-            onClick={() => setPlaying(true)}
-            aria-label={`Play ${title} on Apple Music`}
-            className="absolute inset-0 grid place-items-center bg-ink/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus-visible:opacity-100"
-          >
-            <span className="grid h-12 w-12 place-items-center rounded-full border border-pearl/70 bg-ink/60 text-pearl backdrop-blur-sm">
-              ▶
-            </span>
-          </button>
-        )}
-      </div>
+    <div className="group" style={{ "--accent": accent } as CSSProperties}>
+      <TiltCard max={10} className="relative">
+        <div className="relative aspect-square overflow-hidden rounded-lg border border-smoke/40 bg-smoke/10 transition-shadow duration-500 group-hover:shadow-[0_0_34px_-8px_var(--accent)]">
+          <Image
+            src={cover}
+            alt={`${title} — Spitta P`}
+            fill
+            sizes="(min-width: 1024px) 24vw, (min-width: 640px) 33vw, 50vw"
+            className="object-cover transition-transform duration-500 ease-[var(--ease-brand)] group-hover:scale-105"
+          />
+          {embedSrc && !playing && (
+            <button
+              type="button"
+              onClick={() => setPlaying(true)}
+              aria-label={`Play ${title} on Apple Music`}
+              className="absolute bottom-3 right-3 grid h-11 w-11 place-items-center rounded-full border border-[color:var(--accent)] bg-ink/70 text-pearl backdrop-blur-sm transition-transform duration-300 hover:scale-110"
+              style={{ boxShadow: "0 0 18px -4px var(--accent)" }}
+            >
+              <span className="ml-0.5 text-sm">▶</span>
+            </button>
+          )}
+        </div>
+      </TiltCard>
 
       <h3 className="display mt-3 text-lg text-pearl">{title}</h3>
       <p className="mt-0.5">
@@ -56,15 +65,25 @@ export function ReleaseCard({ release }: { release: Release }) {
       </p>
 
       {embedSrc && playing && (
-        <iframe
-          title={`Apple Music — ${title}`}
-          src={embedSrc}
-          loading="lazy"
-          allow="autoplay *; encrypted-media *; clipboard-write"
-          className="mt-3 w-full rounded-lg"
-          height={175}
-          style={{ border: 0, background: "transparent" }}
-        />
+        <div
+          className="mt-3 rounded-xl p-px"
+          style={{
+            background: "linear-gradient(135deg, var(--accent), transparent 72%)",
+            boxShadow: "0 0 32px -10px var(--accent)",
+          }}
+        >
+          <div className="rounded-[11px] bg-ink p-1.5">
+            <iframe
+              title={`Apple Music — ${title}`}
+              src={embedSrc}
+              loading="lazy"
+              allow="autoplay *; encrypted-media *; clipboard-write"
+              className="block w-full rounded-lg"
+              height={175}
+              style={{ border: 0, background: "transparent" }}
+            />
+          </div>
+        </div>
       )}
 
       <div className="mt-3 flex flex-wrap gap-2">
@@ -73,7 +92,7 @@ export function ReleaseCard({ release }: { release: Release }) {
             type="button"
             onClick={() => setPlaying((v) => !v)}
             aria-expanded={playing}
-            className="display bg-gold px-3 py-1.5 text-[0.7rem] tracking-[0.15em] text-ink transition-colors hover:bg-gold-deep"
+            className="display border border-[color:var(--accent)] px-3 py-1.5 text-[0.7rem] tracking-[0.15em] text-pearl transition-shadow duration-300 hover:shadow-[0_0_18px_-4px_var(--accent)]"
           >
             {playing ? "HIDE PLAYER" : "▶ LISTEN"}
           </button>

@@ -290,6 +290,26 @@ export const releases: Release[] = [
   },
 ];
 
+/**
+ * Per-release accent — the dominant vivid color sampled from each cover, used to
+ * tint that release's Apple Music player frame, play badge, and hover glow so
+ * the player matches its artwork. Brightened to read on the ink canvas.
+ */
+export const releaseAccents: Record<string, string> = {
+  blessings: "#C60002",
+  "caramel-macchiato": "#C6C0BC",
+  "escapin-depression-2": "#E6D3D4",
+  "grind-it-out": "#6BABC6",
+  "in-my-feelings": "#C6A290",
+  introversion: "#C61200",
+  "master-mind": "#C61B1D",
+  "public-enemy": "#C60D26",
+  "set-up": "#C6AA9D",
+  "something-2-prove-rap": "#C60003",
+  "stone-cold": "#A2B1C6",
+  "why-explain": "#C67552",
+};
+
 /** Bio hooks — confirmed (§5). */
 export const bio = {
   hook: "Started writing at nine, recorded his first song at thirteen.",

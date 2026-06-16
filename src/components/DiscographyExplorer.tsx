@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ReleaseCard } from "./ReleaseCard";
-import { TiltCard } from "./TiltCard";
 import type { Release, ReleaseType } from "@/lib/brand";
 
 type Filter = "All" | "Albums" | "EPs" | "Singles";
@@ -62,9 +61,7 @@ export function DiscographyExplorer({ releases }: { releases: Release[] }) {
               exit={reduce ? undefined : { opacity: 0, scale: 0.92 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
-              <TiltCard max={8}>
-                <ReleaseCard release={release} />
-              </TiltCard>
+              <ReleaseCard release={release} />
             </motion.div>
           ))}
         </AnimatePresence>
