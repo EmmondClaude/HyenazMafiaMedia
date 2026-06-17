@@ -170,6 +170,13 @@ export interface Release {
   cover: string; // "/releases/<slug>.jpg"
   spotifyUrl?: string;
   appleUrl?: string;
+  /**
+   * Featured-track Apple Music URL (the song page, i.e. an album URL with
+   * `?i=<trackId>`) for the inline player. Discography rule: a Single plays its
+   * own song from `appleUrl`; an album/EP features its single most-popular track
+   * here — never the whole body of work. Omit to keep Apple as a browse link.
+   */
+  appleEmbedUrl?: string;
 }
 
 export const releases: Release[] = [
@@ -180,6 +187,7 @@ export const releases: Release[] = [
     year: 2026,
     cover: "/releases/blessings.jpg",
     appleUrl: "https://music.apple.com/us/album/blessings-single/1870484091",
+    appleEmbedUrl: "https://music.apple.com/us/album/blessings/1870484091?i=1870484092",
     spotifyUrl: "https://open.spotify.com/album/4tXZ0kjvPA8PMc7MfrvQEA",
   },
   {
@@ -189,6 +197,7 @@ export const releases: Release[] = [
     year: 2025,
     cover: "/releases/public-enemy.jpg",
     appleUrl: "https://music.apple.com/us/album/public-enemy-single/1790237808",
+    appleEmbedUrl: "https://music.apple.com/us/album/public-enemy/1790237808?i=1790238139",
     spotifyUrl: "https://open.spotify.com/album/0pT5ULDL7zpua6CqYzM5hM",
   },
   {
@@ -198,6 +207,7 @@ export const releases: Release[] = [
     year: 2024,
     cover: "/releases/why-explain.jpg",
     appleUrl: "https://music.apple.com/us/album/why-explain-ep/1782748794",
+    appleEmbedUrl: "https://music.apple.com/us/album/wont-settle-pt-2/1782748794?i=1782748798",
     spotifyUrl: "https://open.spotify.com/album/613glB45QLyuStfEe21wIJ",
   },
   {
@@ -207,6 +217,7 @@ export const releases: Release[] = [
     year: 2024,
     cover: "/releases/stone-cold.jpg",
     appleUrl: "https://music.apple.com/us/album/stone-cold-single/1774345314",
+    appleEmbedUrl: "https://music.apple.com/us/album/stone-cold/1774345314?i=1774345315",
     spotifyUrl: "https://open.spotify.com/album/7mid54OU656sTlJaKYurex",
   },
   {
@@ -216,6 +227,7 @@ export const releases: Release[] = [
     year: 2024,
     cover: "/releases/grind-it-out.jpg",
     appleUrl: "https://music.apple.com/us/album/grind-it-out-single/1748420912",
+    appleEmbedUrl: "https://music.apple.com/us/album/grind-it-out/1748420912?i=1748420913",
     spotifyUrl: "https://open.spotify.com/album/7AouhSgtpz4xgDHZmTX1iz",
   },
   {
@@ -225,6 +237,7 @@ export const releases: Release[] = [
     year: 2023,
     cover: "/releases/escapin-depression-2.jpg",
     appleUrl: "https://music.apple.com/us/album/escapin-depression-2/1681158705",
+    appleEmbedUrl: "https://music.apple.com/us/album/life-gets-hard-feat-tha-landlord-leonitus/1681158705?i=1681158981",
     spotifyUrl: "https://open.spotify.com/album/0zTRzHayF4KtEislxDa8Ii",
   },
   {
@@ -234,6 +247,7 @@ export const releases: Release[] = [
     year: 2022,
     cover: "/releases/introversion.jpg",
     appleUrl: "https://music.apple.com/us/album/introversion/1608252606",
+    appleEmbedUrl: "https://music.apple.com/us/album/revolving-doors-feat-emmond-smith/1608252606?i=1608252611",
     spotifyUrl: "https://open.spotify.com/album/7eynOprrHbAc6Vkp9y02Ig",
   },
   {
@@ -251,6 +265,7 @@ export const releases: Release[] = [
     year: 2020,
     cover: "/releases/master-mind.jpg",
     appleUrl: "https://music.apple.com/us/album/master-mind/1546651524",
+    appleEmbedUrl: "https://music.apple.com/us/album/slow-burn-feat-keiloo/1546651524?i=1546651530",
     spotifyUrl: "https://open.spotify.com/album/5m5yx5ud3ygU1qfDVANBqN",
   },
   {
@@ -260,6 +275,7 @@ export const releases: Release[] = [
     year: 2019,
     cover: "/releases/in-my-feelings.jpg",
     appleUrl: "https://music.apple.com/us/album/in-my-feelings/1476999393",
+    appleEmbedUrl: "https://music.apple.com/us/album/focused/1476999393?i=1476999404",
     spotifyUrl: "https://open.spotify.com/album/61QJ2KeqKtNWhqL5nEoxx6",
   },
   {
@@ -278,6 +294,26 @@ export const releases: Release[] = [
   },
 ];
 
+/**
+ * Per-release accent — the dominant vivid color sampled from each cover, used to
+ * tint that release's Apple Music player frame, play badge, and hover glow so
+ * the player matches its artwork. Brightened to read on the ink canvas.
+ */
+export const releaseAccents: Record<string, string> = {
+  blessings: "#C60002",
+  "caramel-macchiato": "#C6C0BC",
+  "escapin-depression-2": "#E6D3D4",
+  "grind-it-out": "#6BABC6",
+  "in-my-feelings": "#C6A290",
+  introversion: "#C61200",
+  "master-mind": "#C61B1D",
+  "public-enemy": "#C60D26",
+  "set-up": "#C6AA9D",
+  "something-2-prove-rap": "#C60003",
+  "stone-cold": "#A2B1C6",
+  "why-explain": "#C67552",
+};
+
 /** Bio hooks — confirmed (§5). */
 export const bio = {
   hook: "Started writing at nine, recorded his first song at thirteen.",
@@ -287,3 +323,26 @@ export const bio = {
   features: ["Kae Jones", "Connie Pee", "D'arrick Dawayne", "Josh Dakid", "Chozen Ru", "Hitman Beatz"],
   press: ['Guest on the Las Vegas podcast "Views From The 7."'],
 } as const;
+
+/**
+ * Official artist destinations — verified from his Spotify (62zntN4UQCZqIiIxRt7fjb)
+ * and Apple (516708870) profiles, June 2026. The "Spitta_p" handle (underscore)
+ * resolves him; plain "Spitta P" pulls a different, feature-only artist.
+ */
+export const artistLinks = {
+  spotify: "https://open.spotify.com/artist/62zntN4UQCZqIiIxRt7fjb",
+  apple: "https://music.apple.com/us/artist/spitta-p/516708870",
+  instagram: "https://instagram.com/spitta_p",
+  bandcamp: "https://hmfden.bandcamp.com",
+} as const;
+
+/** Music videos (Apple Music). */
+export type MusicVideo = { title: string; year: number; url: string };
+
+export const videos: MusicVideo[] = [
+  { title: "Crash Sights", year: 2023, url: "https://music.apple.com/us/music-video/crash-sights/1683488816" },
+  { title: "Flawed Out Being", year: 2022, url: "https://music.apple.com/us/music-video/flawed-out-being/1660494800" },
+  { title: "What Pressure Made", year: 2022, url: "https://music.apple.com/us/music-video/what-pressure-made/1657012765" },
+  { title: "Phoenix", year: 2022, url: "https://music.apple.com/us/music-video/phoenix/1650147384" },
+  { title: "Something 2 Prove", year: 2022, url: "https://music.apple.com/us/music-video/something-2-prove/1650146754" },
+];
