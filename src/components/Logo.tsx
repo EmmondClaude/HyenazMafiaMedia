@@ -53,9 +53,9 @@ export function Logo({
       {/* idle breath + crimson glow pulse; brightens and lifts on hover/focus */}
       <motion.span
         className="inline-block"
-        style={{ filter: glowLo }}
+        style={{ filter: glowLo, transformPerspective: 600 }}
         animate={reduce ? undefined : { scale: [1, 1.04, 1], filter: [glowLo, glowHi, glowLo] }}
-        whileHover={{ scale: 1.07, filter: glowMax }}
+        whileHover={reduce ? undefined : { scale: 1.08, rotateX: 10, filter: glowMax }}
         transition={{ duration: 4.5, ease: "easeInOut", repeat: Infinity }}
       >
         <span className="relative inline-block">

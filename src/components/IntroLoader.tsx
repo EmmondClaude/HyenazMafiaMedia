@@ -15,7 +15,8 @@ export function IntroLoader() {
 
   useEffect(() => {
     // Returning within the session: dismiss on the next tick (no re-show).
-    const delay = sessionStorage.getItem("hmm-intro") ? 0 : 1900;
+    // First visit: hold long enough for the claw-rake + mark-assemble sequence.
+    const delay = sessionStorage.getItem("hmm-intro") ? 0 : 2700;
     const t = setTimeout(() => {
       sessionStorage.setItem("hmm-intro", "1");
       setShow(false);

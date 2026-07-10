@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 import { heroAssets } from "@/lib/heroAssets";
 
 /**
@@ -64,37 +64,61 @@ const RINGS: Ring[] = [
 export function OrbitHero() {
   const reduce = useReducedMotion();
 
+  // Pointer parallax — the metal mark tips toward the cursor across the stage.
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [10, -10]), { stiffness: 150, damping: 18 });
+  const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-10, 10]), { stiffness: 150, damping: 18 });
+
+  function handleMove(e: React.MouseEvent<HTMLDivElement>) {
+    const r = e.currentTarget.getBoundingClientRect();
+    px.set((e.clientX - r.left) / r.width - 0.5);
+    py.set((e.clientY - r.top) / r.height - 0.5);
+  }
+  function resetTilt() {
+    px.set(0);
+    py.set(0);
+  }
+
   return (
-    <div className="grain relative aspect-square w-full overflow-hidden rounded-2xl border border-smoke/40 bg-[radial-gradient(circle_at_50%_50%,rgba(95,1,15,0.4),transparent_70%)]">
-      {/* center — 3D logo emblem (background removed; only the mark shows),
-          with the same layered crimson glow pulse + cascading light sweep */}
-      <motion.div
+    <div
+      className="grain relative aspect-square w-full overflow-hidden rounded-2xl border border-smoke/40 bg-[radial-gradient(circle_at_50%_50%,rgba(95,1,15,0.4),transparent_70%)]"
+      onMouseMove={reduce ? undefined : handleMove}
+      onMouseLeave={reduce ? undefined : resetTilt}
+    >
+      {/* center — 3D logo emblem; outer centers + sets perspective, inner tilts
+          to the cursor with the layered crimson glow pulse + cascading sweep */}
+      <div
         className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-[44%] -translate-x-1/2 -translate-y-1/2"
-        style={{ filter: HERO_GLOW_LO }}
-        animate={reduce ? undefined : { filter: [HERO_GLOW_LO, HERO_GLOW_HI, HERO_GLOW_LO] }}
-        transition={{ duration: 4.5, ease: "easeInOut", repeat: Infinity }}
+        style={{ perspective: 1000 }}
       >
-        <span className="relative block">
-          <Image
-            src={heroAssets.logo.src}
-            alt={heroAssets.logo.alt}
-            width={1817}
-            height={1169}
-            priority
-            className="block h-auto w-full"
-          />
-          {!reduce && (
-            <span
-              aria-hidden
-              className="logo-sweep"
-              style={{
-                WebkitMaskImage: `url(${heroAssets.logo.src})`,
-                maskImage: `url(${heroAssets.logo.src})`,
-              }}
+        <motion.div
+          style={{ rotateX, rotateY, filter: HERO_GLOW_LO }}
+          animate={reduce ? undefined : { filter: [HERO_GLOW_LO, HERO_GLOW_HI, HERO_GLOW_LO] }}
+          transition={{ duration: 4.5, ease: "easeInOut", repeat: Infinity }}
+        >
+          <span className="relative block">
+            <Image
+              src={heroAssets.logo.src}
+              alt={heroAssets.logo.alt}
+              width={1817}
+              height={1169}
+              priority
+              className="block h-auto w-full"
             />
-          )}
-        </span>
-      </motion.div>
+            {!reduce && (
+              <span
+                aria-hidden
+                className="logo-sweep"
+                style={{
+                  WebkitMaskImage: `url(${heroAssets.logo.src})`,
+                  maskImage: `url(${heroAssets.logo.src})`,
+                }}
+              />
+            )}
+          </span>
+        </motion.div>
+      </div>
 
       {RINGS.map((ring) => (
         <Orbit key={ring.href} ring={ring} reduce={reduce} />

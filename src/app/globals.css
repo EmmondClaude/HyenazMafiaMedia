@@ -139,17 +139,18 @@ body {
   top: -25%;
   bottom: -25%;
   left: 0;
-  width: 38%;
+  width: 40%;
   background: linear-gradient(
     90deg,
-    transparent,
-    rgba(254, 254, 241, 0.9),
-    rgba(207, 11, 52, 0.8),
-    transparent
+    transparent 28%,
+    rgba(254, 254, 241, 0.95) 46%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(207, 11, 52, 0.85) 55%,
+    transparent 72%
   );
-  filter: blur(2px);
+  filter: blur(1px);
   mix-blend-mode: screen;
-  transform: translateX(-180%) skewX(-12deg);
+  transform: translateX(-180%) skewX(-14deg);
   animation: logo-sweep 4.8s ease-in-out infinite;
   will-change: transform;
 }
