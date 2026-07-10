@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Anton, Inter } from "next/font/google";
+import { Anton, Inter, Rajdhani } from "next/font/google";
 import "./globals.css";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
-import { IntroLoader } from "@/components/IntroLoader";
+import { VideoLoadingScreen } from "@/components/VideoLoadingScreen";
 import { brand } from "@/lib/brand";
 
 // Display / impact — tall, condensed, all-caps (KICKOFF §4)
@@ -16,6 +16,13 @@ const anton = Anton({
 // Body / UI — clean, neutral, highly legible (KICKOFF §4)
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+// Video loading screen UI (buttons / prompts) — per the Higgsfield handoff
+const rajdhani = Rajdhani({
+  variable: "--font-rajdhani",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -38,10 +45,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${anton.variable} ${inter.variable} h-full antialiased`}
+      className={`${anton.variable} ${inter.variable} ${rajdhani.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-ink text-pearl">
-        <IntroLoader />
+        <VideoLoadingScreen />
         <SiteNav />
         <main className="flex-1">{children}</main>
         <SiteFooter />

@@ -167,6 +167,216 @@ body {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Video loading screen — faithful port of the Higgsfield "Crimson Rain" intro
+   (hyena_loading_screen.html). Scoped under .hmm-loader. Video is self-hosted
+   (/brand/loading-intro.mp4); the enter-screen still image is the CDN source.
+   --------------------------------------------------------------------------- */
+.hmm-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #050505;
+  color: #e0e0e0;
+  overflow: hidden;
+  font-family: var(--font-rajdhani), "Rajdhani", sans-serif;
+  transition: opacity 0.5s ease-out;
+}
+.hmm-loader.hmm-exit {
+  opacity: 0;
+}
+.hmm-loader .video-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+.hmm-loader #introVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hmm-loader .vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 30%,
+    rgba(5, 5, 5, 0.6) 80%,
+    rgba(5, 5, 5, 0.95) 100%
+  );
+}
+.hmm-loader .film-grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 11;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: hmm-grain 0.35s steps(3) infinite;
+}
+@keyframes hmm-grain {
+  0% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(3px, -3px);
+  }
+  66% {
+    transform: translate(-3px, 2px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+.hmm-loader .letterbox {
+  position: fixed;
+  left: 0;
+  right: 0;
+  background: #000;
+  z-index: 12;
+  pointer-events: none;
+  transition: height 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hmm-loader .letterbox.top {
+  top: 0;
+  height: 5vh;
+}
+.hmm-loader .letterbox.bottom {
+  bottom: 0;
+  height: 5vh;
+}
+.hmm-loader .enter-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease-out;
+}
+.hmm-loader .enter-screen.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.hmm-loader .enter-still {
+  position: absolute;
+  inset: 0;
+  background-image: url("https://d2ol7oe51mr4n9.cloudfront.net/user_3ECGVFZTaGiKHb6MBbVpPbvllLv/43e80c9e-df48-47cd-9a89-6aa8ec41cf34.png");
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.45);
+  z-index: 1;
+}
+.hmm-loader .enter-still::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(5, 5, 5, 0.3) 0%,
+    rgba(5, 5, 5, 0.7) 60%,
+    rgba(5, 5, 5, 0.92) 100%
+  );
+}
+.hmm-loader .enter-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(20px);
+  transition: transform 1s ease-out 0.3s;
+}
+.hmm-loader .enter-screen.visible .enter-content {
+  transform: translateY(0);
+}
+.hmm-loader .enter-btn {
+  font-family: var(--font-rajdhani), "Rajdhani", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  padding: 1.1rem 3.5rem;
+  background: transparent;
+  border: 1px solid rgba(200, 16, 46, 0.5);
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: all 0.4s;
+  text-decoration: none;
+  display: inline-block;
+  backdrop-filter: blur(6px);
+  text-transform: uppercase;
+}
+.hmm-loader .enter-btn:hover {
+  background: #c8102e;
+  border-color: #c8102e;
+  box-shadow: 0 0 30px rgba(200, 16, 46, 0.4), inset 0 0 20px rgba(255, 23, 68, 0.1);
+  transform: translateY(-2px);
+}
+.hmm-loader .skip-btn {
+  position: fixed;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 25;
+  background: none;
+  border: 1px solid rgba(200, 16, 46, 0.15);
+  color: rgba(200, 16, 46, 0.4);
+  font-family: var(--font-rajdhani), "Rajdhani", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.hmm-loader .skip-btn:hover {
+  border-color: rgba(200, 16, 46, 0.5);
+  color: rgba(255, 23, 68, 0.8);
+  box-shadow: 0 0 12px rgba(200, 16, 46, 0.15);
+}
+.hmm-loader .unmute-prompt {
+  position: fixed;
+  bottom: 2.5rem;
+  left: 2.5rem;
+  z-index: 25;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: rgba(200, 16, 46, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.hmm-loader .unmute-prompt.visible {
+  opacity: 1;
+}
+@media (max-width: 768px) {
+  .hmm-loader .skip-btn {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+  .hmm-loader .unmute-prompt {
+    bottom: 1.5rem;
+    left: 1.5rem;
+  }
+  .hmm-loader .letterbox.top,
+  .hmm-loader .letterbox.bottom {
+    height: 4vh;
+  }
+  .hmm-loader .enter-btn {
+    padding: 0.9rem 2.5rem;
+    font-size: 0.75rem;
+  }
+}
+
 ::selection {
   background: var(--color-crimson);
   color: var(--color-pearl-highlight);
