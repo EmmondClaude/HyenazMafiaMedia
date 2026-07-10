@@ -13,11 +13,11 @@ import { motion, useReducedMotion } from "motion/react";
  * a crimson-glow lift on hover/focus. prefers-reduced-motion drops to static.
  */
 
-const LOGO = { src: "/brand/hero-logo.png", w: 1817, h: 1169 };
+const LOGO = { src: "/brand/hero-logo.png", w: 2015, h: 1600 };
 
 const HEIGHT: Record<"full" | "wordmark" | "badge", string> = {
   full: "h-16",
-  wordmark: "h-10",
+  wordmark: "h-11",
   badge: "h-12",
 };
 

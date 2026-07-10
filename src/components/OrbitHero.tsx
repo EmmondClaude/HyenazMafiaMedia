@@ -101,8 +101,8 @@ export function OrbitHero() {
             <Image
               src={heroAssets.logo.src}
               alt={heroAssets.logo.alt}
-              width={1817}
-              height={1169}
+              width={2015}
+              height={1600}
               priority
               className="block h-auto w-full"
             />

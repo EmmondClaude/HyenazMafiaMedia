@@ -89,8 +89,8 @@ export function EpkHero() {
                 <Image
                   src={heroAssets.logo.src}
                   alt="HYENAZ MAFIA MEDIA — Spitta P"
-                  width={1817}
-                  height={1169}
+                  width={2015}
+                  height={1600}
                   priority
                   className="h-auto w-full drop-shadow-[0_0_40px_rgba(207,11,52,0.5)]"
                 />

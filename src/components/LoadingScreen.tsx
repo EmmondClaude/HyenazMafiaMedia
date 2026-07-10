@@ -82,8 +82,8 @@ export function LoadingScreen() {
             <Image
               src={LOGO}
               alt="HYENAZ MAFIA MEDIA"
-              width={1817}
-              height={1169}
+              width={2015}
+              height={1600}
               priority
               className="block h-auto w-[min(80vw,460px)]"
             />
